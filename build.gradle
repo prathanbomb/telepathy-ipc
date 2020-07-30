@@ -26,14 +26,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {
-            def repoKey = 'libs-poolshark-local'
-            url "http://165.22.108.76:8081/artifactory/$repoKey"
-            credentials {
-                username = "poolshark"
-                password = "AKCp5fTR45mbtPt9fWimnPxaZYoFpnvEmXbW9891rq4R3VtW8kYViYaQAkHPXTE13UA54p5hF"
-            }
-        }
     }
 }
 
