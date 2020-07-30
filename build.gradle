@@ -1,0 +1,42 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.3.72'
+    ext.jfrog_version = '4.15.2'
+    ext.koin_version = '2.1.5'
+    ext.room_version = "2.2.5"
+    ext.lifecycle_version = "2.2.0"
+    ext.arch_version = "2.1.0"
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$jfrog_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            def repoKey = 'libs-poolshark-local'
+            url "http://165.22.108.76:8081/artifactory/$repoKey"
+            credentials {
+                username = "poolshark"
+                password = "AKCp5fTR45mbtPt9fWimnPxaZYoFpnvEmXbW9891rq4R3VtW8kYViYaQAkHPXTE13UA54p5hF"
+            }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

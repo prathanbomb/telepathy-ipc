@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="th.co.digio.poolshark.telepathy_ipc">
+
+    <permission android:name="th.co.digio.poolshark.permission.MIND_POWER" />
+    <uses-permission android:name="th.co.digio.poolshark.permission.MIND_POWER" />
+
+    <application>
+        <receiver
+            android:name=".Synapse$Dendrite"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="th.co.digio.poolshark.permission.MIND_POWER">
+            <intent-filter>
+                <action android:name="th.co.digio.poolshark.from.Axon" />
+            </intent-filter>
+        </receiver>
+        <provider
+            android:name=".Synapse$SynapseProvider"
+            android:authorities="${applicationId}.synapse.provider"
+            android:exported="false"
+            tools:node="merge" />
+    </application>
+
+</manifest>

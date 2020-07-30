@@ -1,0 +1,93 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
+ext.versionMajor = 1
+ext.versionMinor = 0
+ext.versionPatch = 0
+
+def static releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("Asia/Bangkok")).toInteger()
+}
+
+def static generateVersionName(versionMajor, versionMinor, versionPatch) {
+    String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+    return versionName + "_" + releaseTime()
+}
+
+def libraryGroupId = 'th.co.digio.poolshark'
+def libraryArtifactId = 'telepathy-ipc'
+def libraryVersion = generateVersionName(versionMajor, versionMinor, versionPatch)
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def artifactory_username = properties.getProperty('artifactory_username')
+def artifactory_password = properties.getProperty('artifactory_password')
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode releaseTime()
+        versionName generateVersionName(versionMajor, versionMinor, versionPatch)
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.remotecallback:remotecallback:1.0.0-alpha02'
+
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId libraryGroupId
+            version libraryVersion
+            artifactId libraryArtifactId
+
+            artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
+        }
+    }
+}
+
+artifactory {
+    contextUrl = 'http://165.22.108.76:8081/artifactory'
+    publish {
+        repository {
+            repoKey = 'libs-poolshark-local'
+
+            username = artifactory_username
+            password = artifactory_password
+        }
+        defaults {
+            publications('aar')
+            publishArtifacts = true
+
+            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
+            publishPom = true
+        }
+    }
+}
