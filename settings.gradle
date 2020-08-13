@@ -1,2 +1,4 @@
+include ':app-b'
+include ':app-a'
 rootProject.name='Telepathy IPC'
 include ':telepathy-ipc'
