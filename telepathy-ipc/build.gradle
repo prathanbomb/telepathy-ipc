@@ -22,7 +22,6 @@ def static generateVersionName(versionMajor, versionMinor, versionPatch) {
 
 def libraryGroupId = 'th.co.digio.poolshark'
 def libraryArtifactId = 'telepathy-ipc'
-def libraryVersion = generateVersionName(versionMajor, versionMinor, versionPatch)
 
 ext {
     mGroupId = "th.co.digio.poolshark"
@@ -32,6 +31,28 @@ ext {
 
     mLibraryName = "Telepathy-IPC"
     mLibraryDescription = "Simple IPC Library"
+
+    bintrayRepo = 'maven'
+    bintrayName = 'telepathy-ipc'
+
+    publishedGroupId = libraryGroupId
+    libraryName = libraryArtifactId
+    artifact = 'telepathy-ipc'
+
+    libraryVersion = generateVersionName(versionMajor, versionMinor, versionPatch)
+
+    libraryDescription = 'Simple IPC Library'
+
+    siteUrl = 'https://github.com/prathanbomb/telepathy-ipc'
+    gitUrl = 'https://github.com/prathanbomb/telepathy-ipc.git'
+
+    developerId = 'prathanbomb'
+    developerName = 'Supitsara Prathan'
+    developerEmail = 'prathanbomb@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
 }
 
 android {
@@ -111,3 +132,6 @@ afterEvaluate {
 }
 
 publish.dependsOn assemble
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
