@@ -9,7 +9,7 @@ group='th.co.digio.poolshark'
 
 ext.versionMajor = 1
 ext.versionMinor = 0
-ext.versionPatch = 1
+ext.versionPatch = 2
 
 def static releaseTime() {
     return new Date().format("yyyyMMdd", TimeZone.getTimeZone("Asia/Bangkok")).toInteger()
@@ -71,7 +71,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
